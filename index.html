@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IS1250 DeFi Platform</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #ffffff);
+      color: #333;
+      direction: rtl;
+      text-align: center;
+    }
+    header {
+      background: #1565c0;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      direction: ltr;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+      direction: rtl;
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 20px;
+      color: #fff;
+      direction: rtl;
+    }
+    .menu {
+      display: flex;
+      gap: 15px;
+    }
+    .menu a {
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .menu a:hover {
+      text-decoration: underline;
+    }
+    .currency-box {
+      text-align: center;
+      padding: 10px;
+      background: #e8f5e9;
+      font-weight: bold;
+      max-width: 900px;
+      margin: 10px auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .announcement-box {
+      max-width: 900px;
+      margin: 10px auto;
+      border-radius: 10px;
+      padding: 15px;
+      font-weight: bold;
+      font-size: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      background: #fff3e0;
+      border: 2px solid #ffb300;
+      color: #bf360c;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1, h2 {
+      color: #0d47a1;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      margin: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background: #1976d2;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #0d47a1;
+    }
+    .back-btn { background: #f4511e; }
+    form {
+      text-align: right;
+      margin-top: 20px;
+      direction: rtl;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    .nft-box {
+      background: #e0f7fa;
+      border: 1px dashed #0288d1;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 10px;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 14px;
+      text-align: right;
+    }
+    .loan-card {
+      background: #f1f8e9;
+      border: 1px solid #aed581;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      text-align: right;
+    }
+    .crypto-section {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .crypto-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .crypto-card {
+      background: #fce4ec;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+      text-align: center;
+    }
+    .crypto-card:hover {
+      transform: translateY(-5px);
+    }
+    .crypto-card img {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 10px;
+    }
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">IS1250 DeFi Platform</div>
+    <nav class="menu">
+      <a href="#mainSection">الرئيسية</a>
+      <a href="#borrowerForm">كمقترض</a>
+      <a href="#lenderForm">كمقرض</a>
+    </nav>
+  </header>
+
+  <div class="currency-box" id="currencyRates">جاري تحميل أسعار العملات...</div>
+
+  <div class="announcement-box" id="announcementBox">مرحبًا بك في منصة IS1250 DeFi - التمويل اللامركزي بأمان وشفافية!</div>
+
+  <div class="container" id="mainSection">
+    <h1>ابدأ الآن في التمويل اللامركزي</h1>
+    <button class="btn" onclick="showUserTypeSelection()">ابدأ الخدمة</button>
+  </div>
+
+  <div class="container hidden" id="userTypeSelection">
+    <h2>هل أنت مقترض أم مقرض؟</h2>
+    <button class="btn" onclick="showForm('borrower')">أنا مقترض</button>
+    <button class="btn" onclick="showForm('lender')">أنا مقرض</button>
+    <button class="btn back-btn" onclick="goBackToMain()">العودة</button>
+  </div>
+
+  <div class="container hidden" id="borrowerForm">
+    <h2>نموذج تقديم طلب قرض</h2>
+    <form onsubmit="submitLoanRequest(event)">
+      <label>اسم المتجر</label>
+      <input type="text" id="storeName" required />
+      <label>حجم المبيعات الشهري (بالريال)</label>
+      <input type="number" id="monthlySales" required />
+      <label>تقييم العملاء (من 1 إلى 5)</label>
+      <input type="number" id="rating" min="1" max="5" step="0.1" required />
+      <label>عدد المعاملات السابقة</label>
+      <input type="number" id="transactions" required />
+      <label>المبلغ المطلوب (بالريال)</label>
+      <input type="number" id="loanAmount" required />
+      <div class="nft-box" id="generatedNFT">سيتم توليد وصف NFT تلقائيًا هنا بناءً على البيانات المدخلة</div>
+      <button class="btn" type="submit">إرسال الطلب</button>
+    </form>
+    <button class="btn back-btn" onclick="goBackToUserType()">العودة</button>
+  </div>
+
+  <div class="container hidden" id="borrowerAnnouncement">
+    <div class="announcement-box">
+      إعلان مهم: هناك طلبات قرض جديدة من المقترضين بانتظار تمويلكم. استغل الفرصة لدعم المشاريع الناشئة وكسب الفوائد!
+    </div>
+  </div>
+
+  <div class="container hidden" id="lenderForm">
+    <h2>المشاريع المتاحة للتمويل</h2>
+    <div id="loanRequests"></div>
+    <button class="btn back-btn" onclick="goBackToUserType()">العودة</button>
+  </div>
+
+  <div class="container crypto-section" id="cryptoSection">
+    <h2>العملات الرقمية</h2>
+    <div class="crypto-grid" id="cryptoGrid">جاري التحميل...</div>
+  </div>
+
+<script>
+  const loanRequests = [];
+
+  const announcements = [
+    "مرحبًا بك في منصة IS1250 DeFi - التمويل اللامركزي بأمان وشفافية!",
+    "استثمر الآن مع أفضل المشاريع وتمويل المقترضين الموثوقين.",
+    "تابع أسعار العملات الرقمية مباشرةً واحصل على أفضل الفرص."
+  ];
+  let announcementIndex = 0;
+
+  function rotateAnnouncements() {
+    const box = document.getElementById('announcementBox');
+    announcementIndex = (announcementIndex + 1) % announcements.length;
+    box.textContent = announcements[announcementIndex];
+  }
+  setInterval(rotateAnnouncements, 5000); 
+
+  function showUserTypeSelection() {
+    document.getElementById('mainSection').classList.add('hidden');
+    document.getElementById('userTypeSelection').classList.remove('hidden');
+    document.getElementById('borrowerForm').classList.add('hidden');
+    document.getElementById('lenderForm').classList.add('hidden');
+    document.getElementById('borrowerAnnouncement').classList.add('hidden');
+  }
+
+  function showForm(type) {
+    document.getElementById('userTypeSelection').classList.add('hidden');
+    document.getElementById('borrowerForm').classList.add('hidden');
+    document.getElementById('lenderForm').classList.add('hidden');
+    document.getElementById('borrowerAnnouncement').classList.add('hidden');
+
+    if (type === 'borrower') {
+      document.getElementById('borrowerForm').classList.remove('hidden');
+    } else {
+      if (loanRequests.length > 0) {
+        document.getElementById('borrowerAnnouncement').classList.remove('hidden');
+      }
+      renderLoanRequests();
+      document.getElementById('lenderForm').classList.remove('hidden');
+    }
+  }
+
+  function goBackToMain() {
+    document.getElementById('userTypeSelection').classList.add('hidden');
+    document.getElementById('borrowerForm').classList.add('hidden');
+    document.getElementById('lenderForm').classList.add('hidden');
+    document.getElementById('borrowerAnnouncement').classList.add('hidden');
+    document.getElementById('mainSection').classList.remove('hidden');
+  }
+
+  function goBackToUserType() {
+    document.getElementById('borrowerForm').classList.add('hidden');
+    document.getElementById('lenderForm').classList.add('hidden');
+    document.getElementById('borrowerAnnouncement').classList.add('hidden');
+    document.getElementById('userTypeSelection').classList.remove('hidden');
+  }
+
+  function calculateInterest(sales, rating, transactions) {
+    let base = 15;
+    if (sales > 10000) base -= 3;
+    if (rating >= 4.5) base -= 4;
+    else if (rating >= 3.5) base -= 2;
+    if (transactions > 50) base -= 3;
+    return Math.max(base, 5);
+  }
+
+  function submitLoanRequest(event) {
+    event.preventDefault();
+    const name = document.getElementById('storeName').value;
+    const sales = parseInt(document.getElementById('monthlySales').value);
+    const rating = parseFloat(document.getElementById('rating').value);
+    const transactions = parseInt(document.getElementById('transactions').value);
+    const amount = parseInt(document.getElementById('loanAmount').value);
+
+    const interest = calculateInterest(sales, rating, transactions);
+
+    const nftDescription = `NFT الضمان:\n- اسم المتجر: ${name}\n- حجم المبيعات الشهري: ${sales} ريال\n- تقييم العملاء: ${rating}/5\n- عدد المعاملات السابقة: ${transactions}\n- السمعة: ${rating >= 4.5 ? 'ممتازة' : rating >= 3 ? 'جيدة' : 'متوسطة'}\n- مستوى الثقة: ${(rating * sales).toLocaleString()} وحدة أداء\n- نسبة الفائدة المتوقعة: ${interest}%`;
+
+    document.getElementById('generatedNFT').textContent = nftDescription;
+
+    loanRequests.push({name, sales, rating, transactions, amount, interest, nft: nftDescription});
+    alert('تم إرسال طلب القرض بنجاح!');
+    event.target.reset();
+  }
+
+  function renderLoanRequests() {
+    const container = document.getElementById('loanRequests');
+    container.innerHTML = '';
+    if (loanRequests.length === 0) {
+      container.innerHTML = '<p>لا توجد طلبات تمويل حالياً.</p>';
+      return;
+    }
+    loanRequests.forEach((req, i) => {
+      const div = document.createElement('div');
+      div.className = 'loan-card';
+      div.innerHTML = `
+        <h3>${req.name}</h3>
+        <p>حجم المبيعات الشهري: ${req.sales} ريال</p>
+        <p>تقييم العملاء: ${req.rating}/5</p>
+        <p>المبلغ المطلوب: ${req.amount} ريال</p>
+        <p>نسبة الفائدة المتوقعة: ${req.interest}%</p>
+        <pre>${req.nft}</pre>
+        <button class="btn" onclick="investInLoan(${i})">استثمر في هذا القرض</button>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function investInLoan(index) {
+    const loan = loanRequests[index];
+    alert(`شكراً لاستثمارك في قرض ${loan.name}!`);
+  }
+
+  async function fetchCurrencyRates() {
+    try {
+      const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd,eur,try');
+      const data = await res.json();
+      const container = document.getElementById('currencyRates');
+      container.innerHTML = `أسعار العملات (USD / EUR / TRY): 
+        BTC: $${data.bitcoin.usd} / €${data.bitcoin.eur} / ₺${data.bitcoin.try} |
+        ETH: $${data.ethereum.usd} / €${data.ethereum.eur} / ₺${data.ethereum.try} |
+        USDT: $${data.tether.usd} / €${data.tether.eur} / ₺${data.tether.try}`;
+    } catch (err) {
+      document.getElementById('currencyRates').innerText = 'تعذر تحميل أسعار العملات.';
+      console.error(err);
+    }
+  }
+
+  async function loadCryptoList() {
+    const cryptoGrid = document.getElementById('cryptoGrid');
+    cryptoGrid.innerHTML = '';
+    const cryptos = [
+      { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', img: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png' },
+      { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', img: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png' },
+      { id: 'tether', name: 'Tether', symbol: 'USDT', img: 'https://assets.coingecko.com/coins/images/325/large/Tether-logo.png' }
+    ];
+    cryptos.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'crypto-card';
+      card.innerHTML = `<img src="${c.img}" alt="${c.name}" /><h3>${c.name}</h3><p>رمز: ${c.symbol}</p>`;
+      cryptoGrid.appendChild(card);
+    });
+  }
+
+  fetchCurrencyRates();
+  loadCryptoList();
+</script>
+</body>
+</html>
